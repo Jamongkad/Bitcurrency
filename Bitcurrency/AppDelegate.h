@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootViewController.h"
+#import "UIColor+HTMLColors.h"
+#import "DatabaseController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
