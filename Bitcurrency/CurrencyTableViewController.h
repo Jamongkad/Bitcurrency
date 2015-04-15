@@ -11,6 +11,8 @@
 #import "UIColor+HTMLColors.h"
 #import <AFNetworking/AFNetworking.h>
 
-@interface CurrencyTableViewController : UITableViewController
+#import "DatabaseController.h"
 
+@interface CurrencyTableViewController : UITableViewController
+@property (nonatomic, strong) DatabaseController *dbc;
 @end

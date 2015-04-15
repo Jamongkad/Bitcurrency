@@ -38,4 +38,45 @@
     }
 }
 
+- (NSMutableArray *)getUserCurrencies {
+
+    NSString *sql = @"SELECT * FROM ChosenCurrency ORDER BY id DESC";
+    FMResultSet *rs = [_db executeQuery:sql];
+    
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    if(!rs) {
+        NSLog(@"%s: executeQuery failed: %@", __FUNCTION__, [_db lastErrorMessage]);
+    }
+    
+    while([rs next]) {
+        NSDictionary *currencyData = @{
+            @"name": [rs stringForColumn:@"name"],
+            @"code": [rs stringForColumn:@"code"],
+            @"rate": [rs stringForColumn:@"amount"],
+        };
+        
+        [results addObject: currencyData];
+    }
+    
+    return results;
+}
+
+- (void)saveCurrencyChoice:(NSDictionary *)currencyObj {
+    NSString *creationSql = @"INSERT INTO ChosenCurrency ("
+                              "code,"
+                              "name,"
+                              "amount"
+                              ") VALUES (%@, %@, %@)";
+    
+    NSString *code = [[currencyObj objectForKey:@"code"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *name = [[currencyObj objectForKey:@"name"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    id amount = [currencyObj objectForKey:@"rate"];
+    _success = [_db executeUpdateWithFormat:creationSql, code, name, amount];
+    
+    if(!_success) {
+        NSLog(@"%s: executeQuery failed: %@", __FUNCTION__, [_db lastErrorMessage]);
+    }
+}
+
 @end

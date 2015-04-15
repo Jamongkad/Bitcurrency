@@ -9,12 +9,19 @@
 #import "DashboardTableViewController.h"
 
 @interface DashboardTableViewController ()
-
+@property (nonatomic, strong) NSMutableArray *currencies;
 @end
 
 @implementation DashboardTableViewController
 
 static NSString *CellIdentifier = @"DashCell";
+
+- (id)init {
+    if(self = [super init]) {
+        self.dbc = [[DatabaseController alloc] init];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,20 +43,44 @@ static NSString *CellIdentifier = @"DashCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 100;
+    NSInteger count = [self.currencies count];
+    return count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
+ 
     [cell setBackgroundColor:[UIColor clearColor]];
     [cell.textLabel setTextColor:[UIColor whiteColor]];
-    [cell.textLabel setText:@"Mathew"];
+    [cell.textLabel setText:[data objectForKey:@"name"]];
     // Configure the cell...
     
     return cell;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+    self.currencies = [self.dbc getUserCurrencies];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

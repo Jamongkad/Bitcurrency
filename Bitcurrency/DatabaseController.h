@@ -18,5 +18,5 @@
 
 -(void)createTablesAndSeed;
 -(void)saveCurrencyChoice:(NSDictionary *)currencyObj;
--(FMResultSet *)getUserCurrencies;
+-(NSMutableArray *)getUserCurrencies;
 @end

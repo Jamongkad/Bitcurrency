@@ -69,7 +69,8 @@ static NSString *CellIdentifier = @"CurrencyCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
-    NSLog(@"%@", data);
+    self.dbc = [[DatabaseController alloc] init];
+    [self.dbc saveCurrencyChoice:data];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

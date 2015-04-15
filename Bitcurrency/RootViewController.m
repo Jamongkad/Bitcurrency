@@ -9,7 +9,8 @@
 #import "RootViewController.h"
 
 @interface RootViewController ()
-
+@property (nonatomic, strong) DashboardTableViewController *dtvc;
+@property (nonatomic, strong) NSNumber *toggle;
 @end
 
 @implementation RootViewController
@@ -17,20 +18,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.toggle = [NSNumber numberWithInt:0];
+    
     self.title = @"Rates";
     UIBarButtonItem *addCurrency = [[UIBarButtonItem alloc] initWithTitle:@"Add Currency" style:UIBarButtonItemStylePlain target:self action:@selector(addCurrency:)];
     [addCurrency setTintColor:[UIColor whiteColor]];
+    
+    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(edit:)];
+    [edit setTintColor:[UIColor whiteColor]];
+    
     [self.navigationItem setRightBarButtonItem:addCurrency];
+    [self.navigationItem setLeftBarButtonItem:edit];
     
     UIColor *gradientBG = [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
                                                 withFrame:self.view.frame
                                                 andColors:@[[UIColor flatBlueColor], [UIColor lightGrayColor]]];
     [self.view setBackgroundColor:gradientBG];
-    DashboardTableViewController *dtvc = [[DashboardTableViewController alloc] init];
-    [self addChildViewController:dtvc];
-    [self.view addSubview:dtvc.view];
+    self.dtvc = [[DashboardTableViewController alloc] init];
+    [self addChildViewController:self.dtvc];
+    [self.view addSubview:self.dtvc.view];
 
-    [dtvc.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.dtvc.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
 }
@@ -38,6 +46,16 @@
 - (void)addCurrency:(id)sender {
     CurrencyTableViewController *ctv = [[CurrencyTableViewController alloc] init];
     [self.navigationController pushViewController:ctv animated:YES];
+}
+
+- (void)edit:(id)sender {
+    if([self.toggle isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        self.toggle = [NSNumber numberWithInt:1];
+        [self.dtvc.tableView setEditing:YES animated:YES];
+    } else {
+        self.toggle = [NSNumber numberWithInt:0];
+        [self.dtvc.tableView setEditing:NO animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
