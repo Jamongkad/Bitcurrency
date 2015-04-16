@@ -10,20 +10,23 @@
 
 @interface CurrencyTableViewController ()
 @property (nonatomic, strong) NSArray *currencies;
+@property (nonatomic, strong) NSMutableArray *chosenCurrencies;
 @end
 
 @implementation CurrencyTableViewController
 
 static NSString *CellIdentifier = @"CurrencyCell";
 
+- (id)init {
+    if(self = [super init]) {
+        self.dbc = [[DatabaseController alloc] init];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.title = @"Select Currency";
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     NSString *url = @"https://bitpay.com/api/rates/";
@@ -36,7 +39,8 @@ static NSString *CellIdentifier = @"CurrencyCell";
         NSLog(@"Error: %@", error);
     }];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerClass:[CurrencyTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,12 +61,14 @@ static NSString *CellIdentifier = @"CurrencyCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    CurrencyTableViewCell *cell = (CurrencyTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    if(cell == nil) {
+        cell = [[CurrencyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
     // Configure the cell...
-
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
-    [cell setBackgroundColor:[UIColor clearColor]];
+
+    [cell setUserInteractionEnabled:YES];
     [cell.textLabel setText:[data objectForKey:@"name"]];
     return cell;
 }
@@ -72,6 +78,26 @@ static NSString *CellIdentifier = @"CurrencyCell";
     self.dbc = [[DatabaseController alloc] init];
     [self.dbc saveCurrencyChoice:data];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
+
+    if([self.chosenCurrencies count] > 0) {
+        [self.chosenCurrencies each:^(id object) {
+            if([[object objectForKey:@"code"] isEqualToString:[data objectForKey:@"code"]]) {
+                [cell setAlpha:0.5];
+                [cell setUserInteractionEnabled:NO];
+            }
+        }];
+    }
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+    self.chosenCurrencies = [self.dbc getUserCurrencies];
 }
 
 /*

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
 #import "Database.h"
+#import "ObjectiveSugar.h"
 
 @interface DatabaseController : NSObject
 @property (nonatomic) BOOL success;
@@ -18,5 +19,6 @@
 
 -(void)createTablesAndSeed;
 -(void)saveCurrencyChoice:(NSDictionary *)currencyObj;
+-(void)reorderCurrencies:(NSArray *)objects;
 -(NSMutableArray *)getUserCurrencies;
 @end

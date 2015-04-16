@@ -43,12 +43,16 @@ static NSString *CellIdentifier = @"DashCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
+    [self reloadCurrencyData];
     NSInteger count = [self.currencies count];
     return count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self reloadCurrencyData];
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
@@ -64,6 +68,10 @@ static NSString *CellIdentifier = @"DashCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    [self reloadCurrencyData];
+}
+
+- (void)reloadCurrencyData {
     self.currencies = [self.dbc getUserCurrencies];
 }
 
@@ -76,7 +84,14 @@ static NSString *CellIdentifier = @"DashCell";
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    
+    NSString *stringToMove = [self.currencies objectAtIndex:sourceIndexPath.row];
+    [self.currencies removeObjectAtIndex:sourceIndexPath.row];
+    [self.currencies insertObject:stringToMove atIndex:destinationIndexPath.row];
+    [self.dbc reorderCurrencies:self.currencies];
+    /*
+    NSLog(@"From: %li", sourceIndexPath.row + 1);
+    NSLog(@"To: %li", destinationIndexPath.row + 1);
+    */
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
