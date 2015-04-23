@@ -54,14 +54,12 @@ static NSString *CellIdentifier = @"DashCell";
     [self reloadCurrencyData];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
  
     [cell setBackgroundColor:[UIColor clearColor]];
     [cell.textLabel setTextColor:[UIColor whiteColor]];
     [cell.textLabel setText:[data objectForKey:@"name"]];
     // Configure the cell...
-    
     return cell;
 }
 
@@ -69,6 +67,10 @@ static NSString *CellIdentifier = @"DashCell";
     [super viewWillAppear:animated];
     [self.tableView reloadData];
     [self reloadCurrencyData];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"Selecting %lu", indexPath.row);
 }
 
 - (void)reloadCurrencyData {
@@ -88,13 +90,15 @@ static NSString *CellIdentifier = @"DashCell";
     [self.currencies removeObjectAtIndex:sourceIndexPath.row];
     [self.currencies insertObject:stringToMove atIndex:destinationIndexPath.row];
     [self.dbc reorderCurrencies:self.currencies];
-    /*
-    NSLog(@"From: %li", sourceIndexPath.row + 1);
-    NSLog(@"To: %li", destinationIndexPath.row + 1);
-    */
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(editingStyle == UITableViewCellEditingStyleDelete) {
+        [self reloadCurrencyData];
+        [self.dbc removeCurrency:[self.currencies objectAtIndex:indexPath.row]];
+        [self.currencies removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject: indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 /*
 // Override to support conditional editing of the table view.

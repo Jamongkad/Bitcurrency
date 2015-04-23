@@ -20,5 +20,6 @@
 -(void)createTablesAndSeed;
 -(void)saveCurrencyChoice:(NSDictionary *)currencyObj;
 -(void)reorderCurrencies:(NSArray *)objects;
+-(void)removeCurrency:(NSDictionary *)currencyObj;
 -(NSMutableArray *)getUserCurrencies;
 @end

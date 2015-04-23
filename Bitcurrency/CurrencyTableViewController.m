@@ -29,6 +29,7 @@ static NSString *CellIdentifier = @"CurrencyCell";
     
     self.title = @"Select Currency";
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
     NSString *url = @"https://bitpay.com/api/rates/";
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -39,8 +40,17 @@ static NSString *CellIdentifier = @"CurrencyCell";
         NSLog(@"Error: %@", error);
     }];
     
-    //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
     [self.tableView registerClass:[CurrencyTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callFromBeyond:) name:@"GoBackRoot" object:nil];
+    
+    [self updateGradient];
+}
+
+- (void)callFromBeyond:(NSNotification *)notification {
+    if ([[notification name] isEqualToString:@"GoBackRoot"]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,14 +80,17 @@ static NSString *CellIdentifier = @"CurrencyCell";
 
     [cell setUserInteractionEnabled:YES];
     [cell.textLabel setText:[data objectForKey:@"name"]];
+    [cell.textLabel setTextColor:[UIColor whiteColor]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
-    self.dbc = [[DatabaseController alloc] init];
-    [self.dbc saveCurrencyChoice:data];
-    [self.navigationController popViewControllerAnimated:YES];
+    CurrencyDetailViewController *cdvc = [[CurrencyDetailViewController alloc] init];
+    cdvc.currencyData = data;
+
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -91,13 +104,23 @@ static NSString *CellIdentifier = @"CurrencyCell";
             }
         }];
     }
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+
     self.chosenCurrencies = [self.dbc getUserCurrencies];
+}
+
+- (void)updateGradient {
+    [self.tableView setOpaque:NO];
+    [self.tableView setBackgroundColor:[UIColor clearColor]];
+    [self.view setBackgroundColor:[UIColor flatBlueColor]];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /*

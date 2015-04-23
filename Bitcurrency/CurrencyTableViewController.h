@@ -15,6 +15,8 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import "CurrencyTableViewCell.h"
 
+#import "CurrencyDetailViewController.h"
+
 @interface CurrencyTableViewController : UITableViewController
 @property (nonatomic, strong) DatabaseController *dbc;
 @end

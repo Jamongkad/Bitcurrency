@@ -30,10 +30,7 @@
     [self.navigationItem setRightBarButtonItem:addCurrency];
     [self.navigationItem setLeftBarButtonItem:edit];
     
-    UIColor *gradientBG = [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
-                                                withFrame:self.view.frame
-                                                andColors:@[[UIColor flatBlueColor], [UIColor lightGrayColor]]];
-    [self.view setBackgroundColor:gradientBG];
+    [self.view setBackgroundColor:[UIColor flatBlueColor]];
     self.dtvc = [[DashboardTableViewController alloc] init];
     [self addChildViewController:self.dtvc];
     [self.view addSubview:self.dtvc.view];

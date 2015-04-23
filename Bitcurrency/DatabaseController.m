@@ -104,6 +104,15 @@
     }
 }
 
+- (void)removeCurrency:(NSDictionary *)currencyObj {
+    NSString *sql = @"DELETE FROM ChosenCurrency WHERE id = ?";
+    _success = [_db executeUpdate:sql, [currencyObj objectForKey:@"id"]];
+    
+    if(!_success) {
+        NSLog(@"%s: executeQuery failed: %@", __FUNCTION__, [_db lastErrorMessage]);
+    }
+}
+
 - (void)reorderCurrencies:(NSArray *)objects {
     [objects eachWithIndex:^(id object, NSUInteger index) {
         NSString *sql = @"UPDATE ChosenCurrency SET currencyOrder = ? WHERE id = ?";
