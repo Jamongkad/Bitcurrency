@@ -123,7 +123,9 @@
 - (void)save:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"GoBackRoot" object:self];
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self.dbc saveCurrencyChoice:self.currencyData];
+    NSMutableDictionary *mutableDict = [NSMutableDictionary dictionaryWithDictionary:self.currencyData];
+    [mutableDict setObject:@(self.cfvc.amount) forKey:@"btcAmount"];
+    [self.dbc saveCurrencyChoice:mutableDict];
 }
 
 - (void)cancel:(id)sender {

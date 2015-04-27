@@ -30,6 +30,7 @@
              "code varchar(5) not null,"
              "name varchar(100) not null,"
              "amount numeric(10,2) not null,"
+             "btcAmount numeric(10,2) not null,"
              "timestamp DATE DEFAULT CURRENT_TIMESTAMP"
              ");";
         _success = [_db executeUpdate:sql];
@@ -81,19 +82,22 @@
     return results;
 }
 
-- (void)saveCurrencyChoice:(NSDictionary *)currencyObj {
+- (void)saveCurrencyChoice:(id)currencyObj {
     
     NSString *creationSql = @"INSERT INTO ChosenCurrency ("
                               "currencyOrder,"
                               "code,"
                               "name,"
-                              "amount"
-                              ") VALUES (0, %@, %@, %@);";
+                              "amount,"
+                              "btcAmount"
+                              ") VALUES (0, %@, %@, %@, %@);";
     
     NSString *code = [[currencyObj objectForKey:@"code"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *name = [[currencyObj objectForKey:@"name"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     id amount = [currencyObj objectForKey:@"rate"];
-    _success = [_db executeUpdateWithFormat:creationSql, code, name, amount];
+    id btcAmount = [currencyObj objectForKey:@"btcAmount"];
+    
+    _success = [_db executeUpdateWithFormat:creationSql, code, name, amount, btcAmount];
     
     NSString *orderSql = @"UPDATE ChosenCurrency SET currencyOrder = (SELECT ROWID FROM ChosenCurrency ORDER BY ROWID DESC LIMIT 1)"
                           " WHERE id = (SELECT ROWID FROM ChosenCurrency ORDER BY ROWID DESC LIMIT 1);";
