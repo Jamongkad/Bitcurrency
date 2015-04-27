@@ -58,16 +58,15 @@
     
     [self updateCurrencyRate:amount];
     
-    [btcLabel setText:@"1 BTC"];
     [btcLabel setTextColor:[UIColor whiteColor]];
     
+    [rateHolder addSubview:btcLabel];
     [rateHolder addSubview:currencyCode];
     [rateHolder addSubview:self.currencyRate];
     
     [self.view addSubview:self.cfvc.view];
     [self.view addSubview:currencyName];
     [self.view addSubview:rateHolder];
-    [self.view addSubview:btcLabel];
     
     UIEdgeInsets textPadding = UIEdgeInsetsMake(3, 3, 3, 3);
     
@@ -80,23 +79,24 @@
         make.top.equalTo(currencyName.mas_bottom);
         make.centerX.equalTo(currencyName);
     }];
+    
+        [btcLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(rateHolder.mas_top);
+            make.left.equalTo(rateHolder.mas_left);
+        }];
+    
+        [currencyCode mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(rateHolder.mas_top);
+            make.right.equalTo(self.currencyRate.mas_left).insets(textPadding);
+            make.left.equalTo(btcLabel.mas_right);
+        }];
 
         [self.currencyRate mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(rateHolder.mas_top);
             make.right.equalTo(rateHolder.mas_right);
         }];
-        
-        [currencyCode mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(rateHolder.mas_top);
-            make.right.equalTo(self.currencyRate.mas_left).insets(textPadding);
-            make.left.equalTo(rateHolder.mas_left);
-        }];
-    
-    [btcLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.currencyRate.mas_bottom);
-        make.centerX.equalTo(rateHolder);
-    }];
-    
+
+
     [self.cfvc.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(btcLabel.mas_bottom);
         make.left.equalTo(self.view.mas_left);
@@ -105,9 +105,8 @@
     }];
     
     [RACObserve(self.cfvc, amount) subscribeNext:^(id x) {
-        [btcLabel setText:[NSString stringWithFormat:@"%f BTC", [x floatValue]]];
+        [btcLabel setText:[NSString stringWithFormat:@"BTC %f = ", [x floatValue]]];
         float newAmount = [amount floatValue] * [x floatValue];
-        NSLog(@"new amount %f", newAmount);
         [self updateCurrencyRate:[NSNumber numberWithFloat:newAmount]];
     }];
 }
