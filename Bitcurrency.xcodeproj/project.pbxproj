@@ -14,6 +14,7 @@
 		AF11F7B81ADD493F00756BBC /* DatabaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF11F7B71ADD493F00756BBC /* DatabaseController.m */; };
 		AF11F7BC1ADEB2DC00756BBC /* CurrencyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF11F7BB1ADEB2DC00756BBC /* CurrencyTableViewCell.m */; };
 		AF4256EB1AE8F24C00538E45 /* CurrencyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF4256EA1AE8F24C00538E45 /* CurrencyDetailViewController.m */; };
+		AF63B6101AEA620900BCA903 /* CurrencyFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF63B60F1AEA620900BCA903 /* CurrencyFormViewController.m */; };
 		AF8F162E1ADCD98E00158EB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8F162D1ADCD98E00158EB9 /* main.m */; };
 		AF8F16311ADCD98E00158EB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8F16301ADCD98E00158EB9 /* AppDelegate.m */; };
 		AF8F16341ADCD98E00158EB9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8F16331ADCD98E00158EB9 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		AF11F7BB1ADEB2DC00756BBC /* CurrencyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyTableViewCell.m; sourceTree = "<group>"; };
 		AF4256E91AE8F24C00538E45 /* CurrencyDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyDetailViewController.h; sourceTree = "<group>"; };
 		AF4256EA1AE8F24C00538E45 /* CurrencyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyDetailViewController.m; sourceTree = "<group>"; };
+		AF63B60E1AEA620900BCA903 /* CurrencyFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyFormViewController.h; sourceTree = "<group>"; };
+		AF63B60F1AEA620900BCA903 /* CurrencyFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyFormViewController.m; sourceTree = "<group>"; };
 		AF8F16281ADCD98E00158EB9 /* Bitcurrency.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bitcurrency.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF8F162C1ADCD98E00158EB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF8F162D1ADCD98E00158EB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -110,6 +113,7 @@
 				AF11F7AB1ADCFD8000756BBC /* App */,
 				AF11F7A61ADCFA4900756BBC /* RootViewController.h */,
 				AF11F7A71ADCFA4900756BBC /* RootViewController.m */,
+				AF4256F31AEA4BB100538E45 /* Forms */,
 				AF11F7B91ADEB24700756BBC /* TableHelpers */,
 				AF11F7AA1ADCFD0300756BBC /* TableViewControllers */,
 				AF8F16321ADCD98E00158EB9 /* ViewController.h */,
@@ -158,6 +162,15 @@
 				AF11F7BB1ADEB2DC00756BBC /* CurrencyTableViewCell.m */,
 			);
 			name = TableHelpers;
+			sourceTree = "<group>";
+		};
+		AF4256F31AEA4BB100538E45 /* Forms */ = {
+			isa = PBXGroup;
+			children = (
+				AF63B60E1AEA620900BCA903 /* CurrencyFormViewController.h */,
+				AF63B60F1AEA620900BCA903 /* CurrencyFormViewController.m */,
+			);
+			name = Forms;
 			sourceTree = "<group>";
 		};
 		AF8F161F1ADCD98E00158EB9 = {
@@ -363,6 +376,7 @@
 				AF11F7B11ADD207F00756BBC /* CurrencyTableViewController.m in Sources */,
 				AF11F7A81ADCFA4900756BBC /* RootViewController.m in Sources */,
 				AFB085201AE698D800CC8147 /* CurrencyViewController.m in Sources */,
+				AF63B6101AEA620900BCA903 /* CurrencyFormViewController.m in Sources */,
 				AF8F162E1ADCD98E00158EB9 /* main.m in Sources */,
 				AF11F7AE1ADCFEE500756BBC /* DashboardTableViewController.m in Sources */,
 			);

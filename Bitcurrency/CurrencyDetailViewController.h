@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "DatabaseController.h"
 #import "Chameleon.h"
+#import "Masonry.h"
+#import "CurrencyFormViewController.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 
 @interface CurrencyDetailViewController : UIViewController
 @property (nonatomic, strong) NSDictionary *currencyData;

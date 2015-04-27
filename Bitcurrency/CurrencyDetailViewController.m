@@ -9,7 +9,8 @@
 #import "CurrencyDetailViewController.h"
 
 @interface CurrencyDetailViewController ()
-
+@property (nonatomic, strong) CurrencyFormViewController *cfvc;
+@property (nonatomic, strong) UILabel *currencyRate;
 @end
 
 @implementation CurrencyDetailViewController
@@ -33,7 +34,91 @@
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     [cancel setTintColor:[UIColor whiteColor]];
     [self.navigationItem setLeftBarButtonItem:cancel];
+    
     [self.view setBackgroundColor:[UIColor flatBlueColor]];
+    
+    NSLog(@"%@ data", self.currencyData);
+    
+    self.cfvc = [[CurrencyFormViewController alloc] init];
+    [self addChildViewController:self.cfvc];
+    
+    UILabel *currencyName = [[UILabel alloc] init];
+    UILabel *currencyCode = [[UILabel alloc] init];
+    self.currencyRate = [[UILabel alloc] init];
+    UILabel *btcLabel = [[UILabel alloc] init];
+    UIView *rateHolder = [[UIView alloc] init];
+  
+    NSNumber *amount = [self.currencyData objectForKey:@"rate"];
+    
+    [currencyName setText:[self.currencyData objectForKey:@"name"]];
+    [currencyName setTextColor:[UIColor whiteColor]];
+
+    [currencyCode setText:[self.currencyData objectForKey:@"code"]];
+    [currencyCode setTextColor:[UIColor whiteColor]];
+    
+    [self updateCurrencyRate:amount];
+    
+    [btcLabel setText:@"1 BTC"];
+    [btcLabel setTextColor:[UIColor whiteColor]];
+    
+    [rateHolder addSubview:currencyCode];
+    [rateHolder addSubview:self.currencyRate];
+    
+    [self.view addSubview:self.cfvc.view];
+    [self.view addSubview:currencyName];
+    [self.view addSubview:rateHolder];
+    [self.view addSubview:btcLabel];
+    
+    UIEdgeInsets textPadding = UIEdgeInsetsMake(3, 3, 3, 3);
+    
+    [currencyName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(100);
+        make.centerX.equalTo(self.view);
+    }];
+    
+    [rateHolder mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(currencyName.mas_bottom);
+        make.centerX.equalTo(currencyName);
+    }];
+
+        [self.currencyRate mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(rateHolder.mas_top);
+            make.right.equalTo(rateHolder.mas_right);
+        }];
+        
+        [currencyCode mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(rateHolder.mas_top);
+            make.right.equalTo(self.currencyRate.mas_left).insets(textPadding);
+            make.left.equalTo(rateHolder.mas_left);
+        }];
+    
+    [btcLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.currencyRate.mas_bottom);
+        make.centerX.equalTo(rateHolder);
+    }];
+    
+    [self.cfvc.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(btcLabel.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
+    
+    [RACObserve(self.cfvc, amount) subscribeNext:^(id x) {
+        [btcLabel setText:[NSString stringWithFormat:@"%f BTC", [x floatValue]]];
+        float newAmount = [amount floatValue] * [x floatValue];
+        NSLog(@"new amount %f", newAmount);
+        [self updateCurrencyRate:[NSNumber numberWithFloat:newAmount]];
+    }];
+}
+
+- (void)updateCurrencyRate:(NSNumber *)amount {
+    NSNumberFormatter *currencyFormat = [[NSNumberFormatter alloc] init];
+    [currencyFormat setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [currencyFormat setCurrencySymbol:@""];
+    
+    [self.currencyRate setText:[NSString stringWithFormat:@"%@", [currencyFormat stringFromNumber:amount]]];
+    [self.currencyRate setTextColor:[UIColor whiteColor]];
 }
 
 - (void)save:(id)sender {
