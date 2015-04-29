@@ -8,17 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <Masonry/Masonry.h>
+#import "TWRBorderedView.h"
+#import "Chameleon.h"
 
 @interface RatesTableViewCell : UITableViewCell {
     UILabel *currencyLabel;
     UILabel *currencyRate;
-    UILabel *bitcoinRate;
     UILabel *bitcoinAmount;
+    UILabel *bitcoinFont;
+    UILabel *equalSign;
+    UIView *cellContainer;
+    UIView *separator;
 }
 
 @property (nonatomic, strong) UILabel *currencyLabel;
 @property (nonatomic, strong) UILabel *currencyRate;
-@property (nonatomic, strong) UILabel *bitcoinRate;
 @property (nonatomic, strong) UILabel *bitcoinAmount;
 
 @end

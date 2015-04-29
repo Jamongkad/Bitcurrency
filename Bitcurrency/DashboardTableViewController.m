@@ -26,6 +26,7 @@ static NSString *CellIdentifier = @"DashCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setBackgroundColor:[UIColor clearColor]];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView registerClass:[RatesTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
@@ -56,14 +57,10 @@ static NSString *CellIdentifier = @"DashCell";
     RatesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
     
-    NSLog(@"%@", data);
-    
     NSString *url = [NSString stringWithFormat:@"https://bitpay.com/api/rates/%@", [data objectForKey:@"code"]];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Currecy %@", [responseObject objectForKey:@"rate"]);
-        
         id netRate = [responseObject objectForKey:@"rate"];
         id btcAmount = [data objectForKey:@"btcAmount"];
         float myRate = [btcAmount floatValue] * [netRate floatValue];
@@ -75,14 +72,14 @@ static NSString *CellIdentifier = @"DashCell";
 
         [cell.currencyRate setTextColor:[UIColor whiteColor]];
         [cell.currencyRate setText:[NSString stringWithFormat:@"%@", [currencyFormat stringFromNumber:rate]]];
+        
+        [cell.currencyLabel setTextColor:[UIColor lightTextColor]];
+        [cell.currencyLabel setText:[data objectForKey:@"code"]];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
   
-    [cell.currencyLabel setTextColor:[UIColor whiteColor]];
-    [cell.currencyLabel setText:[data objectForKey:@"name"]];
-    
     [cell.bitcoinAmount setTextColor:[UIColor whiteColor]];
     [cell.bitcoinAmount setText:[NSString stringWithFormat:@"%.2f", [[data objectForKey:@"btcAmount"] floatValue]]];
     
@@ -96,7 +93,8 @@ static NSString *CellIdentifier = @"DashCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selecting %lu", indexPath.row);
+    NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
+    NSLog(@"Selected data: %@", data);
 }
 
 - (void)reloadCurrencyData {
@@ -125,6 +123,10 @@ static NSString *CellIdentifier = @"DashCell";
         [self.currencies removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject: indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 68;
 }
 /*
 // Override to support conditional editing of the table view.
