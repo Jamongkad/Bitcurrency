@@ -13,6 +13,8 @@
 
 #import "DatabaseController.h"
 
+#import "RatesTableViewCell.h"
+
 @interface DashboardTableViewController : UITableViewController
 @property (nonatomic, strong) DatabaseController *dbc;
 @end

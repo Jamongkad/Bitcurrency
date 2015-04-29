@@ -73,6 +73,7 @@
             @"currencyOrder": [rs stringForColumn:@"currencyOrder"],
             @"name": [rs stringForColumn:@"name"],
             @"code": [rs stringForColumn:@"code"],
+            @"btcAmount": [rs stringForColumn:@"btcAmount"],
             @"rate": [rs stringForColumn:@"amount"],
         };
         

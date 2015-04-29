@@ -96,7 +96,6 @@
             make.right.equalTo(rateHolder.mas_right);
         }];
 
-
     [self.cfvc.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(btcLabel.mas_bottom);
         make.left.equalTo(self.view.mas_left);

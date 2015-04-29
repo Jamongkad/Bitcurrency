@@ -26,7 +26,7 @@ static NSString *CellIdentifier = @"DashCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setBackgroundColor:[UIColor clearColor]];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerClass:[RatesTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,13 +53,39 @@ static NSString *CellIdentifier = @"DashCell";
     
     [self reloadCurrencyData];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    RatesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
- 
-    [cell setBackgroundColor:[UIColor clearColor]];
-    [cell.textLabel setTextColor:[UIColor whiteColor]];
-    [cell.textLabel setText:[data objectForKey:@"name"]];
-    // Configure the cell...
+    
+    NSLog(@"%@", data);
+    
+    NSString *url = [NSString stringWithFormat:@"https://bitpay.com/api/rates/%@", [data objectForKey:@"code"]];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Currecy %@", [responseObject objectForKey:@"rate"]);
+        
+        id netRate = [responseObject objectForKey:@"rate"];
+        id btcAmount = [data objectForKey:@"btcAmount"];
+        float myRate = [btcAmount floatValue] * [netRate floatValue];
+        
+        NSNumberFormatter *currencyFormat = [[NSNumberFormatter alloc] init];
+        [currencyFormat setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [currencyFormat setCurrencySymbol:@""];
+        NSNumber *rate = [NSNumber numberWithFloat:myRate];
+
+        [cell.currencyRate setTextColor:[UIColor whiteColor]];
+        [cell.currencyRate setText:[NSString stringWithFormat:@"%@", [currencyFormat stringFromNumber:rate]]];
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+  
+    [cell.currencyLabel setTextColor:[UIColor whiteColor]];
+    [cell.currencyLabel setText:[data objectForKey:@"name"]];
+    
+    [cell.bitcoinAmount setTextColor:[UIColor whiteColor]];
+    [cell.bitcoinAmount setText:[NSString stringWithFormat:@"%.2f", [[data objectForKey:@"btcAmount"] floatValue]]];
+    
     return cell;
 }
 

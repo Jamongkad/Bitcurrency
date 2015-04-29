@@ -13,6 +13,7 @@
 		AF11F7B51ADD46E000756BBC /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = AF11F7B41ADD46E000756BBC /* Database.m */; };
 		AF11F7B81ADD493F00756BBC /* DatabaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF11F7B71ADD493F00756BBC /* DatabaseController.m */; };
 		AF11F7BC1ADEB2DC00756BBC /* CurrencyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF11F7BB1ADEB2DC00756BBC /* CurrencyTableViewCell.m */; };
+		AF330B4E1AEE3E50007D4174 /* RatesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF330B4D1AEE3E50007D4174 /* RatesTableViewCell.m */; };
 		AF4256EB1AE8F24C00538E45 /* CurrencyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF4256EA1AE8F24C00538E45 /* CurrencyDetailViewController.m */; };
 		AF63B6101AEA620900BCA903 /* CurrencyFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF63B60F1AEA620900BCA903 /* CurrencyFormViewController.m */; };
 		AF8F162E1ADCD98E00158EB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8F162D1ADCD98E00158EB9 /* main.m */; };
@@ -51,6 +52,8 @@
 		AF11F7B71ADD493F00756BBC /* DatabaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseController.m; sourceTree = "<group>"; };
 		AF11F7BA1ADEB2DC00756BBC /* CurrencyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyTableViewCell.h; sourceTree = "<group>"; };
 		AF11F7BB1ADEB2DC00756BBC /* CurrencyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyTableViewCell.m; sourceTree = "<group>"; };
+		AF330B4C1AEE3E50007D4174 /* RatesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatesTableViewCell.h; sourceTree = "<group>"; };
+		AF330B4D1AEE3E50007D4174 /* RatesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatesTableViewCell.m; sourceTree = "<group>"; };
 		AF4256E91AE8F24C00538E45 /* CurrencyDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyDetailViewController.h; sourceTree = "<group>"; };
 		AF4256EA1AE8F24C00538E45 /* CurrencyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyDetailViewController.m; sourceTree = "<group>"; };
 		AF63B60E1AEA620900BCA903 /* CurrencyFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyFormViewController.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 			children = (
 				AF11F7BA1ADEB2DC00756BBC /* CurrencyTableViewCell.h */,
 				AF11F7BB1ADEB2DC00756BBC /* CurrencyTableViewCell.m */,
+				AF330B4C1AEE3E50007D4174 /* RatesTableViewCell.h */,
+				AF330B4D1AEE3E50007D4174 /* RatesTableViewCell.m */,
 			);
 			name = TableHelpers;
 			sourceTree = "<group>";
@@ -374,6 +379,7 @@
 				AF11F7B51ADD46E000756BBC /* Database.m in Sources */,
 				AF11F7BC1ADEB2DC00756BBC /* CurrencyTableViewCell.m in Sources */,
 				AF11F7B11ADD207F00756BBC /* CurrencyTableViewController.m in Sources */,
+				AF330B4E1AEE3E50007D4174 /* RatesTableViewCell.m in Sources */,
 				AF11F7A81ADCFA4900756BBC /* RootViewController.m in Sources */,
 				AFB085201AE698D800CC8147 /* CurrencyViewController.m in Sources */,
 				AF63B6101AEA620900BCA903 /* CurrencyFormViewController.m in Sources */,
