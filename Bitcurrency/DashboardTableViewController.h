@@ -12,8 +12,8 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "DatabaseController.h"
-
 #import "RatesTableViewCell.h"
+#import "CurrencyDetailViewController.h"
 
 @interface DashboardTableViewController : UITableViewController
 @property (nonatomic, strong) DatabaseController *dbc;

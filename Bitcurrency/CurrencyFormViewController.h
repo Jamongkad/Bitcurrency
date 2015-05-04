@@ -12,4 +12,5 @@
 
 @interface CurrencyFormViewController : XLFormViewController <XLFormDescriptorDelegate>
 @property (nonatomic) float amount;
+-(id)initWithBTCamount:(float)btcAmount;
 @end

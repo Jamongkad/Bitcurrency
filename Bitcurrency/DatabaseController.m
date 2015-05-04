@@ -109,6 +109,22 @@
     }
 }
 
+- (void)updateCurrencyChoice:(NSDictionary *)currencyObj {
+
+    NSString *creationSql = @"UPDATE ChosenCurrency "
+                             "SET btcAmount = %@ "
+                             "WHERE id = %@";
+    
+    id btcAmount = [currencyObj objectForKey:@"btcAmount"];
+    id currencyId = [currencyObj objectForKey:@"id"];
+    
+    _success = [_db executeUpdateWithFormat:creationSql, btcAmount, currencyId];
+
+    if(!_success) {
+        NSLog(@"%s: executeQuery failed: %@", __FUNCTION__, [_db lastErrorMessage]);
+    }
+}
+
 - (void)removeCurrency:(NSDictionary *)currencyObj {
     NSString *sql = @"DELETE FROM ChosenCurrency WHERE id = ?";
     _success = [_db executeUpdate:sql, [currencyObj objectForKey:@"id"]];

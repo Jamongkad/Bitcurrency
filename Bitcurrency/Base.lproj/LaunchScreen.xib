@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default-Portrait" translatesAutoresizingMaskIntoConstraints="NO" id="Fgv-lE-ugb">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bitcurrency" translatesAutoresizingMaskIntoConstraints="NO" id="Fgv-lE-ugb">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="480" id="gOK-Ea-O3a"/>
@@ -30,6 +30,6 @@
         </view>
     </objects>
     <resources>
-        <image name="Default-Portrait" width="768" height="1004"/>
+        <image name="bitcurrency" width="512" height="384"/>
     </resources>
 </document>

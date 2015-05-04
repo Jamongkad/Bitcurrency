@@ -61,6 +61,7 @@ static NSString *CellIdentifier = @"DashCell";
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         id netRate = [responseObject objectForKey:@"rate"];
         id btcAmount = [data objectForKey:@"btcAmount"];
         float myRate = [btcAmount floatValue] * [netRate floatValue];
@@ -94,7 +95,12 @@ static NSString *CellIdentifier = @"DashCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *data = [self.currencies objectAtIndex:indexPath.row];
-    NSLog(@"Selected data: %@", data);
+    
+    CurrencyDetailViewController *cdvc = [[CurrencyDetailViewController alloc] init];
+    cdvc.currencyData = data;
+
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)reloadCurrencyData {

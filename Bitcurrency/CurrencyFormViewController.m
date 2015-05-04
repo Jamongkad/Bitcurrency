@@ -15,7 +15,7 @@
 
 @synthesize amount;
 
-- (instancetype)init {
+- (instancetype)initWithBTCamount:(float)btcAmount {
     if(self = [super init]) {
         XLFormDescriptor *formDescriptor = [XLFormDescriptor formDescriptor];
         XLFormSectionDescriptor *section;
@@ -34,6 +34,7 @@
         [row.cellConfig setObject:[UIColor whiteColor] forKey:@"textField.textColor"];
         
         row.required = YES;
+        row.value = [NSString stringWithFormat:@"%.2f", btcAmount];
         [section addFormRow:row];
         
         return [super initWithForm:formDescriptor];
@@ -42,10 +43,10 @@
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setBackgroundColor:[UIColor flatBlueColor]];
-    self.amount = 1.0;
     // Do any additional setup after loading the view.
 }
 

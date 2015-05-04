@@ -12,7 +12,7 @@
 #import "Masonry.h"
 #import "CurrencyFormViewController.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
-
+#import <AFNetworking/AFNetworking.h>
 
 @interface CurrencyDetailViewController : UIViewController
 @property (nonatomic, strong) NSDictionary *currencyData;

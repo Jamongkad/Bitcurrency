@@ -27,9 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save:)];
-    [save setTintColor:[UIColor whiteColor]];
-    [self.navigationItem setRightBarButtonItem:save];
+    UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save:)];
     
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     [cancel setTintColor:[UIColor whiteColor]];
@@ -37,9 +35,21 @@
     
     [self.view setBackgroundColor:[UIColor flatBlueColor]];
     
-    NSLog(@"%@ data", self.currencyData);
+    NSLog(@"Data %@", self.currencyData);
     
-    self.cfvc = [[CurrencyFormViewController alloc] init];
+    float btcAmount = 1.0;
+    
+    if([self.currencyData valueForKey:@"btcAmount"]) {
+        btcAmount = [[self.currencyData valueForKey:@"btcAmount"] floatValue];
+        rightBtn = [[UIBarButtonItem alloc] initWithTitle:@"Update" style:UIBarButtonItemStylePlain target:self action:@selector(update:)];
+    }
+   
+    [rightBtn setTintColor:[UIColor whiteColor]];
+    [self.navigationItem setRightBarButtonItem:rightBtn];
+    
+    self.cfvc = [[CurrencyFormViewController alloc] initWithBTCamount:btcAmount];
+    self.cfvc.amount = btcAmount;
+    
     [self addChildViewController:self.cfvc];
     
     UILabel *currencyName = [[UILabel alloc] init];
@@ -47,16 +57,12 @@
     self.currencyRate = [[UILabel alloc] init];
     UILabel *btcLabel = [[UILabel alloc] init];
     UIView *rateHolder = [[UIView alloc] init];
-  
-    NSNumber *amount = [self.currencyData objectForKey:@"rate"];
     
     [currencyName setText:[self.currencyData objectForKey:@"name"]];
     [currencyName setTextColor:[UIColor whiteColor]];
 
     [currencyCode setText:[self.currencyData objectForKey:@"code"]];
     [currencyCode setTextColor:[UIColor whiteColor]];
-    
-    [self updateCurrencyRate:amount];
     
     [btcLabel setTextColor:[UIColor whiteColor]];
     
@@ -102,9 +108,21 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+
+    NSString *url = [NSString stringWithFormat:@"https://bitpay.com/api/rates/%@", [self.currencyData objectForKey:@"code"]];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    __block NSNumber *amount = nil;
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        amount = [responseObject objectForKey:@"rate"];
+        float newAmount = [amount floatValue] * btcAmount;
+        [self updateCurrencyRate:[NSNumber numberWithFloat:newAmount]];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {    
+        NSLog(@"Error: %@", error);
+    }];
     
     [RACObserve(self.cfvc, amount) subscribeNext:^(id x) {
-        [btcLabel setText:[NSString stringWithFormat:@"BTC %f = ", [x floatValue]]];
+        [btcLabel setText:[NSString stringWithFormat:@"BTC %.2f = ", [x floatValue]]];
         float newAmount = [amount floatValue] * [x floatValue];
         [self updateCurrencyRate:[NSNumber numberWithFloat:newAmount]];
     }];
@@ -125,6 +143,14 @@
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionaryWithDictionary:self.currencyData];
     [mutableDict setObject:@(self.cfvc.amount) forKey:@"btcAmount"];
     [self.dbc saveCurrencyChoice:mutableDict];
+}
+
+- (void)update:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GoBackRoot" object:self];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    NSMutableDictionary *mutableDict = [NSMutableDictionary dictionaryWithDictionary:self.currencyData];
+    [mutableDict setObject:@(self.cfvc.amount) forKey:@"btcAmount"];
+    [self.dbc updateCurrencyChoice:mutableDict];
 }
 
 - (void)cancel:(id)sender {
